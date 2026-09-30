@@ -12,6 +12,17 @@ class Blackjack:
               "=", hand_value(player))
 
     def round(self):
+        print(f"Current balance: {self.chips} chips")
+        while True:
+            try:
+                bet = int(input(f"Place your bet (1-{self.chips}): "))
+                if 1 <= bet <= self.chips:
+                    break
+                else:
+                    print(f"Invalid bet. You must bet between 1 and {self.chips}.")
+            except ValueError:
+                print("Invalid input. Please enter a whole number.")
+
         deck = Deck()
         player = [deck.draw(), deck.draw()]
         dealer = [deck.draw(), deck.draw()]
@@ -28,7 +39,7 @@ class Blackjack:
                 self.show(player, dealer)
                 if hand_value(player) > 21:
                     print("Bust.")
-                    self.chips -= 10  # Added chip deduction for a bust
+                    self.chips -= bet  # Subtract dynamic bet on bust
                     return True
                     
         while hand_value(dealer) < 17:
@@ -38,13 +49,13 @@ class Blackjack:
         pv, dv = hand_value(player), hand_value(dealer)
         
         if dv > 21 or pv > dv:
-            self.chips += 10
+            self.chips += bet  # Add dynamic bet on win
             print("Player wins.")
         elif pv < dv:
-            self.chips -= 10
+            self.chips -= bet  # Subtract dynamic bet on loss
             print("Dealer wins.")
         else:
-            print("Push.")
+            print("Push.")  # Balance remains unchanged
         return True
 
     def run(self):
