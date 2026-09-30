@@ -28,12 +28,15 @@ class Blackjack:
                 self.show(player, dealer)
                 if hand_value(player) > 21:
                     print("Bust.")
+                    self.chips -= 10  # Added chip deduction for a bust
                     return True
+                    
         while hand_value(dealer) < 17:
             dealer.append(deck.draw())
 
         self.show(player, dealer, hide=False)
         pv, dv = hand_value(player), hand_value(dealer)
+        
         if dv > 21 or pv > dv:
             self.chips += 10
             print("Player wins.")
